@@ -7,43 +7,40 @@ def tag_is_not_empty(tag: int):
 
 
 def main():
+    print('A list of my personal projects:')
     show_project_details()
-    # single_project_details()
+    print('My first project details')
+    single_project_details()
 
 
-def get_project_tags():
-    return [
-        {'tag': 'h3'},
-        {'tag': 'p'},
-        {'tag': 'ul'},
-        {'tag': 'script'},
-    ]
+def show_project_features(project_tag: BeautifulSoup | int):
+    all_features = [feature.text.strip() for feature in project_tag if tag_is_not_empty(feature)]
+    for i, feature in enumerate(all_features, start=1):
+        print(f'{i}) {feature}')
 
 
 def show_project_details():
+    def show_colab_link(selected_tag: str = 'script'):
+        if selected_tag == tag:
+            if tag_is_not_empty(project_tag):
+                link: str = project_tag.get('src')
+                print('link to colab:'.title(), link)
+
     with requests.get('https://akbharchowdhury.github.io/portfolio_generator/') as response:
         soup: BeautifulSoup = BeautifulSoup(response.content, 'html.parser')
         projects = soup.find(id="projects")
 
-    tags = get_project_tags()
-
+    tags: list[str] = ['h3', 'p', 'ul', 'script']
     for project in projects:
         for tag in tags:
-            html_tag = tag.get('tag')
-            project_tag = project.find(html_tag)
+            project_tag = project.find(tag)
             if tag_is_not_empty(project_tag):
-                if html_tag == 'ul':
-                    all_features = [feature.text.strip() for index, feature in enumerate(project_tag, start=1) if tag_is_not_empty(feature)]
-                    for i, feature in enumerate(all_features, start=1):
-                        print(f'{i}) {feature}')
+                if not tag == 'ul':
+                    print(project_tag.text.strip())
                 else:
-                    content = project_tag.text.strip()
-                    print(content)
+                    show_project_features(project_tag)
+            show_colab_link()
 
-            if html_tag == 'script':
-                if tag_is_not_empty(project_tag):
-                    script = project.find(html_tag)
-                    print('link to colab:'.title(), script['src'])
         print()
 
 
