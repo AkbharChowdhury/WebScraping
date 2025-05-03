@@ -1,0 +1,6 @@
+link
+https://pypi.org/project/beautifulsoup4/
+https://pypi.org/project/requests/
+
+run this command:
+pip install requests beautifulsoup4
