@@ -9,12 +9,12 @@ def tag_is_not_empty(tag: int):
 def main():
     print('A list of my personal projects:')
     show_project_details()
-    print('My first project details')
-    single_project_details()
+    # print('My first project details')
+    # single_project_details()
 
 
 def show_project_features(project_tag: BeautifulSoup | int):
-    all_features = [feature.text.strip() for feature in project_tag if tag_is_not_empty(feature)]
+    all_features: list[str] = [feature.text.strip() for feature in project_tag if tag_is_not_empty(feature)]
     for i, feature in enumerate(all_features, start=1):
         print(f'{i}) {feature}')
 
@@ -25,13 +25,13 @@ def get_project_data():
         return soup.find(id="projects")
 
 
-def show_project_details():
-    def show_colab_link(selected_tag: str = 'script'):
-        if selected_tag == tag:
-            if tag_is_not_empty(project_tag):
-                link: str = project_tag.get('src')
-                print('link to colab:'.title(), link)
+def show_colab_link123(tag: str, project_tag: BeautifulSoup | int):
+    if 'script'.casefold() == tag.casefold() and tag_is_not_empty(project_tag):
+        link: str = project_tag.get('src')
+        link = 'https://colab.research.google.com/gist/AkbharChowdhury/8b22b62988589e939d563fcbb6e9d0a3/data_visualisation.ipynb'
+        print('Link to Colab:'.title(), link)
 
+def show_project_details():
     tags: list[str] = ['h3', 'p', 'ul', 'script']
     projects: BeautifulSoup = get_project_data()
 
@@ -43,7 +43,8 @@ def show_project_details():
                     print(project_tag.text.strip())
                 else:
                     show_project_features(project_tag)
-            show_colab_link()
+            # show_colab_link()
+            show_colab_link123(tag=tag, project_tag=project_tag)
 
         print()
 
