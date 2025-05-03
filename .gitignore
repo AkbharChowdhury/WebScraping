@@ -4,6 +4,7 @@
 # C extensions
 *.so
 .venv
+.idea
 # Distribution / packaging
 .Python
 build/
