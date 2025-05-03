@@ -19,6 +19,12 @@ def show_project_features(project_tag: BeautifulSoup | int):
         print(f'{i}) {feature}')
 
 
+def get_project_data():
+    with requests.get('https://akbharchowdhury.github.io/portfolio_generator/') as response:
+        soup: BeautifulSoup = BeautifulSoup(response.content, 'html.parser')
+        return soup.find(id="projects")
+
+
 def show_project_details():
     def show_colab_link(selected_tag: str = 'script'):
         if selected_tag == tag:
@@ -26,11 +32,9 @@ def show_project_details():
                 link: str = project_tag.get('src')
                 print('link to colab:'.title(), link)
 
-    with requests.get('https://akbharchowdhury.github.io/portfolio_generator/') as response:
-        soup: BeautifulSoup = BeautifulSoup(response.content, 'html.parser')
-        projects = soup.find(id="projects")
-
     tags: list[str] = ['h3', 'p', 'ul', 'script']
+    projects: BeautifulSoup = get_project_data()
+
     for project in projects:
         for tag in tags:
             project_tag = project.find(tag)
@@ -45,9 +49,7 @@ def show_project_details():
 
 
 def single_project_details():
-    with requests.get('https://akbharchowdhury.github.io/portfolio_generator/') as response:
-        soup: BeautifulSoup = BeautifulSoup(response.content, 'html.parser')
-        projects = soup.find(id="projects")
+    projects: BeautifulSoup = get_project_data()
     heading = projects.h3.text
     description = projects.p.text
     projects_features = projects.ul
