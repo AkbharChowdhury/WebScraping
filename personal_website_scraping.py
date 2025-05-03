@@ -32,16 +32,19 @@ def show_project_details():
             html_tag = tag.get('tag')
             project_tag = project.find(html_tag)
             if tag_is_not_empty(project_tag):
-                content = project_tag.text.strip()
-                print(content)
-                print()
+                if html_tag == 'ul':
+                    all_features = [feature.text.strip() for index, feature in enumerate(project_tag, start=1)  if feature not in ['\n']]
+                    for i, feature in enumerate(all_features, start=1):
+                        print(f'{i}) {feature}')
+                else:
+                    content = project_tag.text.strip()
+                    print(content)
 
             if html_tag == 'script':
                 if tag_is_not_empty(project_tag):
-                    print('link to colab:'.title())
                     script = project.find(html_tag)
-                    print(f'{script['src']}')
-
+                    print('link to colab:'.title(), script['src'])
+        print()
 
 
 def single_project_details():
