@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 
 def tag_is_not_empty(tag: int):
-    return tag not in [-1, None]
+    return tag not in [-1, None, '\n']
 
 
 def main():
@@ -33,7 +33,7 @@ def show_project_details():
             project_tag = project.find(html_tag)
             if tag_is_not_empty(project_tag):
                 if html_tag == 'ul':
-                    all_features = [feature.text.strip() for index, feature in enumerate(project_tag, start=1)  if feature not in ['\n']]
+                    all_features = [feature.text.strip() for index, feature in enumerate(project_tag, start=1) if tag_is_not_empty(feature)]
                     for i, feature in enumerate(all_features, start=1):
                         print(f'{i}) {feature}')
                 else:
