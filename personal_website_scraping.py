@@ -14,7 +14,7 @@ def main():
 
 
 def show_project_features(project_tag: BeautifulSoup | int):
-    all_features: list[str] = [feature.text.strip() for feature in project_tag if tag_is_not_empty(feature)]
+    all_features: set[str] = {feature.text.strip() for feature in project_tag if tag_is_not_empty(feature)}
     for i, feature in enumerate(all_features, start=1):
         print(f'{i}) {feature}')
 
@@ -32,7 +32,7 @@ def show_colab_link(tag: str, project_tag: BeautifulSoup | int):
 
 def show_project_details():
     tags: list[str] = ['h3', 'p', 'ul', 'script']
-    projects: BeautifulSoup = get_project_data()
+    projects = get_project_data()
 
     for project in projects:
         for tag in tags:
@@ -40,11 +40,10 @@ def show_project_details():
             if tag_is_not_empty(project_tag):
                 if not tag == 'ul':
                     print(project_tag.text.strip())
-                else:
-                    show_project_features(project_tag)
+                    continue
+                show_project_features(project_tag)
             show_colab_link(tag=tag, project_tag=project_tag)
-
-        print()
+        # print('-'*20)
 
 
 def single_project_details():
