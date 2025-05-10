@@ -43,7 +43,6 @@ def show_project_details():
                     continue
                 show_project_features(project_tag)
             show_colab_link(tag=tag, project_tag=project_tag)
-        # print('-'*20)
 
 
 def single_project_details():
