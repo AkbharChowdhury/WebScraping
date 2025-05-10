@@ -3,14 +3,14 @@ from bs4 import BeautifulSoup
 
 
 def tag_is_not_empty(tag: int):
-    return tag not in [-1, None, '\n']
+    return tag not in (-1, None, '\n')
 
 
 def main():
     print('A list of my personal projects:')
     show_project_details()
-    # print('My first project details')
-    # single_project_details()
+    print('My first project details')
+    single_project_details()
 
 
 def show_project_features(project_tag: BeautifulSoup | int):
@@ -25,9 +25,8 @@ def get_project_data():
         return soup.find(id="projects")
 
 
-def show_colab_link123(tag: str, project_tag: BeautifulSoup | int):
+def show_colab_link(tag: str, project_tag: BeautifulSoup | int):
     if 'script'.casefold() == tag.casefold() and tag_is_not_empty(project_tag):
-        link: str = project_tag.get('src')
         link = 'https://colab.research.google.com/gist/AkbharChowdhury/8b22b62988589e939d563fcbb6e9d0a3/data_visualisation.ipynb'
         print('Link to Colab:'.title(), link)
 
@@ -43,8 +42,7 @@ def show_project_details():
                     print(project_tag.text.strip())
                 else:
                     show_project_features(project_tag)
-            # show_colab_link()
-            show_colab_link123(tag=tag, project_tag=project_tag)
+            show_colab_link(tag=tag, project_tag=project_tag)
 
         print()
 
