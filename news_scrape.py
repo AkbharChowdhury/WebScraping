@@ -28,7 +28,7 @@ def main():
         'sport': 'container-sport'
     }
 
-    news = list(fetch_articles(cats.get('weekend')))
+    news = list(fetch_articles(cats.get('more')))
     print(json.dumps(news, indent=4))
 
 
