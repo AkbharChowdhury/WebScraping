@@ -24,7 +24,7 @@ def main():
     for current_page in range(1, max_pages + 1):
         books_on_page = list(fetch_book(current_page))
         all_books.extend(books_on_page)
-        print(f'Books on page {current_page}: {books_on_page}')
+        print(f'Books on page {current_page}: {json.dumps(books_on_page, indent=2)}')
     with open('books.json', 'w') as f:
         json.dump(all_books, f, indent=2)
     print('data is saved to books.json')
