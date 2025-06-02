@@ -18,16 +18,33 @@ def fetch_book(page_number: int):
     return books
 
 
+def pricer(book):
+    return float(book.get('price').split('£')[1])
+
+
+def print_books(books):
+    print(json.dumps(books, indent=2))
+
+
+def save_books(books: list[dict[str, str]]):
+    with open('books.json', 'w') as f:
+        json.dump(books, f, indent=2)
+    print('data is saved to books.json')
+
+
 def main():
-    all_books: list[dict[str, str]] = []
+    books: list[dict[str, str | float]] = []
     max_pages: int = 10
     for current_page in range(1, max_pages + 1):
         books_on_page = list(fetch_book(current_page))
-        all_books.extend(books_on_page)
+        books.extend(books_on_page)
         print(f'Books on page {current_page}: {json.dumps(books_on_page, indent=2)}')
-    with open('books.json', 'w') as f:
-        json.dump(all_books, f, indent=2)
-    print('data is saved to books.json')
+
+    for book in books:
+        price: float = float(book.get('price').split('£')[1])
+        book['price'] = price
+    filtered = BookHandler.filter_books(books=books, title_starts_with='u', price_range=(10, 20))
+    print_books(filtered)
 
 
 if __name__ == '__main__':

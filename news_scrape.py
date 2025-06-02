@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
+from datetime import datetime, date
+def is_weekend(d = datetime.today()):
+  return d.weekday() > 4
 
 def get_news_data():
     with requests.get('https://www.theguardian.com/uk') as response:
@@ -15,11 +17,16 @@ def fetch_articles(container_div_id: str = 'container-more-features'):
     uls = container.find_all('ul')
     for ul in uls:
         for li in ul:
-            div_container = li.find('div').find('div')
-            category: str = li.find(class_='card-headline').find('div').text
-            title: str = div_container.find('a')['aria-label']
-            yield dict(title=title, featured_text=category)
+            try:
+                category: str = li.find(class_='card-headline').find('div').text
+                title: str = li.find_all('div')[1].find('a')['aria-label']
+                yield dict(title=title, featured_text=category)
+            except Exception:
+                pass
 
+def show_article_details(title: str):
+    news = list(fetch_articles(title))
+    print(json.dumps(news, indent=4))
 
 def main():
     cats = {
@@ -27,9 +34,10 @@ def main():
         'more': 'container-more-features',
         'sport': 'container-sport'
     }
+    show_article_details('container-sport')
+    if is_weekend():
+        show_article_details(cats.get('more'))
 
-    news = list(fetch_articles(cats.get('more')))
-    print(json.dumps(news, indent=4))
 
 
 if __name__ == '__main__':
