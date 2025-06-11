@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+from typography import bold_text
+
 tag_is_not_empty = lambda tag: tag not in (-1, None, '\n')
 
 
@@ -29,7 +31,7 @@ class Project:
                 project_tag = project.find(tag)
                 if tag_is_not_empty(project_tag):
                     if not tag == 'ul':
-                        print(project_tag.text.strip())
+                        print(bold_text(project_tag.text.strip()))
                         continue
                     self.__show_project_features(project_tag)
                 self.__show_colab_link(tag=tag, project_tag=project_tag)
@@ -39,7 +41,7 @@ class Project:
         heading = projects.h3.text
         description = projects.p.text
         projects_features = projects.ul
-        print(heading)
+        print(bold_text(heading))
         print(description)
         for index, feature in enumerate(projects_features, start=1):
             print(f'- {feature.text}'.strip())
