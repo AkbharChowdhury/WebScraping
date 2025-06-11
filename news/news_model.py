@@ -1,19 +1,8 @@
-import requests
-from bs4 import BeautifulSoup
-import json
-from datetime import datetime
-from pydantic import BaseModel
 from enum import StrEnum
 
-
-class Tags(StrEnum):
-    WEEKEND = 'container-weekend'
-    MORE = 'container-more-features'
-    SPORT = 'container-sport'
-
-
-def is_weekend(d=datetime.today()):
-    return d.weekday() > 4
+import requests
+from bs4 import BeautifulSoup
+from pydantic import BaseModel
 
 
 class News(BaseModel):
@@ -38,13 +27,7 @@ class News(BaseModel):
                     pass
 
 
-def main():
-    tag: str = Tags.WEEKEND.name if is_weekend() else Tags.SPORT.name
-    news = News(__container=tag)
-    print(json.dumps(list(news.fetch_articles()), indent=4))
-
-
-if __name__ == '__main__':
-    # print(Tags('MORE'))
-
-    main()
+class Tags(StrEnum):
+    WEEKEND = 'container-weekend'
+    MORE = 'container-more-features'
+    SPORT = 'container-sport'

@@ -27,7 +27,7 @@ def print_books(books):
 
 
 def save_books(books: list[dict[str, str]]):
-    with open('books.json', 'w') as f:
+    with open('../books.json', 'w') as f:
         json.dump(books, f, indent=2)
     print('data is saved to books.json')
 
@@ -38,12 +38,14 @@ def main():
     for current_page in range(1, max_pages + 1):
         books_on_page = list(fetch_book(current_page))
         books.extend(books_on_page)
-        print(f'Books on page {current_page}: {json.dumps(books_on_page, indent=2)}')
+        # print(f'Books on page {current_page}: {json.dumps(books_on_page, indent=2)}')
 
     for book in books:
         price: float = float(book.get('price').split('£')[1])
         book['price'] = price
-    filtered = BookHandler.filter_books(books=books, title_starts_with='u', price_range=(10, 20))
+    # filtered = BookHandler.filter_books(books=books, title_starts_with='u', price_range=(10, 20))
+    filtered = BookHandler.filter_books(books=books, title_starts_with='u', min_price=20)
+    print(f'{len(filtered)} book(s) found')
     print_books(filtered)
 
 
