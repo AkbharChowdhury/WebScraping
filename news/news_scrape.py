@@ -8,8 +8,8 @@ def is_weekend(d: datetime = datetime.today()):
 
 
 def main():
-    tag: str = Tags.WEEKEND.name if is_weekend() else Tags.SPORT.name
-    news = News(__container=tag)
+    tag: Tags = Tags.WEEKEND if is_weekend() else Tags.MORE
+    news = News(container=tag)
     print(json.dumps(list(news.fetch_articles()), indent=4))
 
 
