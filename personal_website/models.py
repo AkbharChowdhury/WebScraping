@@ -6,6 +6,10 @@ from typography import bold_text
 tag_is_not_empty = lambda tag: tag not in (-1, None, '\n')
 
 
+def format_content(tag: str, text: str) -> str:
+    return bold_text(text) if tag == 'h3' else text
+
+
 class Project:
 
     def __show_project_features(self, project_tag: BeautifulSoup | int):
@@ -24,14 +28,16 @@ class Project:
             print('Link to Colab:'.title(), link)
 
     def show_project_details(self):
-        tags: set[str] = {'h3', 'p', 'ul', 'script'}
+        ul: str = 'ul'
+        tags: set[str] = {'h3', 'p', ul, 'script'}
         projects = self.__get_project_data()
         for project in projects:
             for tag in tags:
                 project_tag = project.find(tag)
                 if tag_is_not_empty(project_tag):
-                    if not tag == 'ul':
-                        print(bold_text(project_tag.text.strip()))
+                    if not tag == ul:
+                        content: str = project_tag.text.strip()
+                        print(format_content(tag=tag, text=content))
                         continue
                     self.__show_project_features(project_tag)
                 self.__show_colab_link(tag=tag, project_tag=project_tag)
